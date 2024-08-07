@@ -1,6 +1,6 @@
 import pubchempy as pcp
 
-with open("compounds.tsv", "w") as f:
+with open("../resources/compounds.tsv", "w") as f:
     #f.write(f'iupac_name\tisomeric_smiles\n')
     for i in range(1, 1000):
         print(i)
