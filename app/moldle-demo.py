@@ -59,29 +59,24 @@ def get_red_herrings(compounds, compound_index):
 
 
 
-
-
-
-
-
 # print correct name and some red herrings, ask user
 # to guess the corrent name
 def user_guess(compounds, red_herrings):
     compound_guess = st.radio(
         "**Select a compound**",
-        [
+        options=[
             compounds["name"][red_herrings[0]],
             compounds["name"][red_herrings[1]],
             compounds["name"][red_herrings[2]],
             compounds["name"][red_herrings[3]],
             compounds["name"][red_herrings[4]]
         ],
-        index=None,
     )
+    return compound_guess
 
 def check_user_guess(compound_guess, compounds, compound_index):
-    #st.write(compound_guess)
-    #st.write(compounds["name"[compound_index]])
+    st.write(compound_guess)
+    st.write(compounds["name"][compound_index])
     if str(compound_guess) == compounds["name"][compound_index]:
         st.write("yes!")
     else:
