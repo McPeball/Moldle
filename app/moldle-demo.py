@@ -22,13 +22,13 @@ def read_compounds(file = "../resources/compounds.tsv"):
         "SMILES":smiles
     }
     return compounds
+
 # pick a compound at random from the dataset
 def choose_compound_index(compounds):
     compound_index = random.randint(0, (len(compounds["name"]) - 1))
     return compound_index
 
 # show the compound using rdkit
-
 def draw_smiles(compounds, compound_index, png_file = "compound.png") -> None:
     m = Chem.MolFromSmiles(compounds["SMILES"][compound_index])
     img = Draw.MolToImage(m)
@@ -56,14 +56,6 @@ def get_red_herrings(compounds, compound_index):
 # eg. If 'pyro' is component of the target compound name, it and any other
 # compounds that also contain 'pyro' would get a count of one for 'pyro'
 # Other compounds would get a count of zero.
-
-
-
-
-
-
-
-
 # print correct name and some red herrings, ask user
 # to guess the corrent name
 def user_guess(compounds, red_herrings):
@@ -75,17 +67,18 @@ def user_guess(compounds, red_herrings):
             compounds["name"][red_herrings[2]],
             compounds["name"][red_herrings[3]],
             compounds["name"][red_herrings[4]]
-        ],
-        index=None,
+        ]
     )
+    return compound_guess
 
 def check_user_guess(compound_guess, compounds, compound_index):
-    #st.write(compound_guess)
-    #st.write(compounds["name"[compound_index]])
-    if str(compound_guess) == compounds["name"][compound_index]:
-        st.write("yes!")
-    else:
-        st.write("no!")
+    #st.write(str(compound_guess))
+    #st.write(compounds["name"][compound_index])
+    if compound_guess:
+        if str(compounds["name"][compound_index]) == str(compound_guess):
+            st.write("yes!")
+        else:
+            st.write("no!")
 
 def main():
     compounds = read_compounds()
@@ -93,7 +86,6 @@ def main():
     compound_index = choose_compound_index(compounds)
     draw_smiles(compounds, compound_index, png_file = "compound.png")
     red_herrings = get_red_herrings(compounds, compound_index)
-    compound_guess = None
     compound_guess = user_guess(compounds, red_herrings)
     check_user_guess(compound_guess, compounds, compound_index)
 
