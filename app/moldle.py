@@ -95,6 +95,7 @@ def main():
         st.session_state.compound_index = choose_compound_index(st.session_state.compounds)
     if 'red_herrings' not in st.session_state:
         st.session_state.red_herrings = get_red_herrings(st.session_state.compounds, st.session_state.compound_index)
+    st.image('../resources/logo.png')
     draw_smiles(st.session_state.compounds, st.session_state.compound_index, png_file = "compound.png")
     user_guess(st.session_state.compounds, st.session_state.red_herrings, st.session_state.compound_index)
 
