@@ -52,16 +52,14 @@ def get_red_herrings(compounds, compound_index):
 
 def check_user_guess() -> None:
     if st.session_state.guess == st.session_state.compounds["name"][st.session_state.compound_index]:
-        st.write("you guessed correct")
         st.session_state.user_score += 1
-        st.write(f"Streak: {st.session_state.user_score}") 
     else:
-        st.write("YOU LOSE!")
+        st.session_state.wrong = True
+        st.session_state.should_have_been = st.session_state.compounds["name"][st.session_state.compound_index]
         st.session_state.user_score = 0
     st.session_state.compound_index = choose_compound_index(st.session_state.compounds)
     st.session_state.red_herrings = get_red_herrings(st.session_state.compounds, st.session_state.compound_index)
     
-#    user_guess(st.session_state.compounds, st.session_state.red_herrings, st.session_state.compound_index)
 
 def user_guess(compounds, red_herrings, compound_index):
     st.session_state.guess = st.radio(
@@ -87,6 +85,9 @@ def user_guess(compounds, red_herrings, compound_index):
 
 
 def main():
+    if "wrong" not in st.session_state:
+        st.session_state.wrong = False
+        st.session_state.should_have_been = ''
     if "user_score" not in st.session_state:
         st.session_state.user_score = 0
     if "compounds" not in st.session_state:
@@ -95,9 +96,13 @@ def main():
         st.session_state.compound_index = choose_compound_index(st.session_state.compounds)
     if 'red_herrings' not in st.session_state:
         st.session_state.red_herrings = get_red_herrings(st.session_state.compounds, st.session_state.compound_index)
-    st.image('../resources/logo.png')
+    st.image('../resources/logo.png', width=300)
     draw_smiles(st.session_state.compounds, st.session_state.compound_index, png_file = "compound.png")
     user_guess(st.session_state.compounds, st.session_state.red_herrings, st.session_state.compound_index)
+    if st.session_state.wrong:
+        st.write(f"The correct answer was {st.session_state.should_have_been}")
+        st.session_state.wrong = False
+    st.write(f"Streak: {st.session_state.user_score}")
 
 if __name__ == "__main__":
     main()
