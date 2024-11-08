@@ -6,13 +6,13 @@ from rdkit.Chem import Draw
 from scipy import spatial as sc
 
 # Get dataset of smiles and iupac names
-def read_compounds(file = "../resources/compounds.tsv"):
+def read_compounds(file = "../resources/compounds.tsv", max_name_length = 100):
     with open(file, "r") as f:
         compound_names = []
         smiles = []
         for l in f:
             data_elements = l.split("\t")
-            if len(data_elements[0]) > 30:
+            if len(data_elements[0]) > max_name_length:
                 continue
             compound_names.append(data_elements[0])
             smiles.append(data_elements[1])
@@ -102,7 +102,7 @@ def main():
     if st.session_state.wrong:
         st.write(f"The correct answer was {st.session_state.should_have_been}")
         st.session_state.wrong = False
-    st.write(f"Streak: {st.session_state.user_score}")
+    st.write(f"**Streak:** {st.session_state.user_score}")
 
 if __name__ == "__main__":
     main()
