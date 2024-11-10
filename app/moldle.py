@@ -4,9 +4,10 @@ import pubchempy as pcp
 from rdkit import Chem
 from rdkit.Chem import Draw
 from scipy import spatial as sc
+import glob
 
 # Get dataset of smiles and iupac names
-def read_compounds(file = "../resources/compounds.tsv", max_name_length = 100):
+def read_compounds(file_glob = "../resources/compounds_*.tsv", max_name_length = 100):
     """Read a tsv file of compound names and isomeric SMILES strings
     The input file is generated using utils/get_compounds.py, reading
     data from Pubchem.
@@ -16,15 +17,18 @@ def read_compounds(file = "../resources/compounds.tsv", max_name_length = 100):
     correpsond with each other. ie. The first element of the list 'name' corresponds
     to the first element of the list in 'SMILES' and so on.
     """
-    with open(file, "r") as f:
-        compound_names = []
-        smiles = []
-        for l in f:
-            data_elements = l.split("\t")
-            if len(data_elements[0]) > max_name_length:
-                continue
-            compound_names.append(data_elements[0])
-            smiles.append(data_elements[1])
+    compound_names = []
+    smiles = []
+    files = glob.glob(file_glob)
+    for file in files:
+        with open(file, "r") as f:
+            
+            for l in f:
+                data_elements = l.split("\t")
+                if len(data_elements[0]) > max_name_length:
+                    continue
+                compound_names.append(data_elements[0])
+                smiles.append(data_elements[1])
     compounds = {
         "name":compound_names,
         "SMILES":smiles
